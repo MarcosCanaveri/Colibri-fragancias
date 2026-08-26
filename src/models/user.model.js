@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 
-import { ROLES } from "../constants/index.js";
-
 const userSchema = new mongoose.Schema(
     {
         firstName: { 
@@ -27,8 +25,8 @@ const userSchema = new mongoose.Schema(
 
         role: {
             type: String,
-            enum: Object.values(ROLES), 
-            default: ROLES.CUSTOMER 
+            enum: ["admin", "customer", "store"],
+            default: "customer"
         },
 
         documents: {
@@ -36,7 +34,10 @@ const userSchema = new mongoose.Schema(
             default: []
         }
     },
-    { timestamps: true }
+    { timestamps: true, 
+        versionKey: false
+    }
 );
 
-export default mongoose.model("User", userSchema);
+const UserModel = mongoose.model("User", userSchema);
+export default UserModel;

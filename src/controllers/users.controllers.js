@@ -1,4 +1,4 @@
-import usersService from '../services/users.service.js';
+import { usersService } from '../services/users.service.js';
 
 export const getUsers = async (req, res) => {
   try {
@@ -33,7 +33,7 @@ export const updateUser = async (req, res) => {
     const user = await usersService.updateUser(req.params.uid, req.body);
     res.json({ status: "success", payload: user });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ status: "error", message: error.message });
+    res.status(500).json({ status: "error", message: error.message });
   }
 };
 
@@ -42,6 +42,6 @@ export const deleteUser = async (req, res) => {
     const user = await usersService.deleteUser(req.params.uid);
     res.json({ status: "success", payload: user });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ status: "error", message: error.message });
+    res.status(500).json({ status: "error", message: error.message });
   }
 };

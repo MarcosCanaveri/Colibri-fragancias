@@ -1,7 +1,5 @@
 import { usersRepository } from '../repositories/users.repository.js';
 
-import { ROLES } from '../constants/index.js';
-
 export const usersService = {
   getUsers: async () => {
     return usersRepository.findAll();
@@ -20,17 +18,14 @@ export const usersService = {
   createUser: async (userData) => {
     const { firstName, lastName, email, password, role } = userData;
 
-    
-    const finalRole = Object.values(ROLES).includes(role) ? role : ROLES.CUSTOMER;
+    if (!firstName || !lastName || !email || !password) {
+      const error = new Error('Missing required fields');
+      error.statusCode = 400;
+      throw error;
+    }
 
-    const user = await usersRepository.create({ 
-      firstName, 
-      lastName, 
-      email, 
-      password, 
-      role: finalRole 
-    });
-    return user;
+   
+    return usersRepository.create({ userData });
   },
 
   updateUser: async (id, userData) => {
@@ -54,5 +49,3 @@ export const usersService = {
   }
 };
 
-
-export default usersService;
